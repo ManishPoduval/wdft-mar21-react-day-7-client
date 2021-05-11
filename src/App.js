@@ -10,6 +10,14 @@ import AddForm from './components/AddForm'
 import EditForm from './components/EditForm'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
+import NotFound from './components/NotFound'
+import MyMap from './components/MyMap'
+import Chatbot from './components/Chatbot'
+import MyCalendar from './components/MyCalendar'
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from './components/CheckoutForm'
+import './App.css'
 
 class App extends Component {
 
@@ -114,20 +122,29 @@ class App extends Component {
     let name = event.target.name.value
     let description = event.target.description.value
 
-    //1. Make an API call to the server side Route to create a new todo
-    axios.post(`${config.API_URL}/api/create`, {
-      name: name,
-      description: description,
-      completed: false,
-    }, {withCredentials: true})
+    let image = event.target.todoImage.files[0]
+    let formData = new FormData()
+    formData.append( 'imageUrl' ,  image   )
+
+    // sending image to the coudinary route
+    axios.post(`${config.API_URL}/api/upload`, formData)
       .then((response) => {
-          // 2. Once the server has successfully created a new todo, update your state that is visible to the user
-          this.setState({
-            todos: [response.data, ...this.state.todos]
-          }, () => {
-            //3. Once the state is update, redirect the user to the home page
-            this.props.history.push('/')
-          })
+        //chaining promises
+        return  axios.post(`${config.API_URL}/api/create`, {
+                    name: name,
+                    description: description,
+                    completed: false,
+                    image: response.data.image
+                  }, {withCredentials: true})
+      })
+      .then((response) => {
+        // 2. Once the server has successfully created a new todo, update your state that is visible to the user
+        this.setState({
+          todos: [response.data, ...this.state.todos]
+        }, () => {
+          //3. Once the state is update, redirect the user to the home page
+          this.props.history.push('/')
+        })
 
       })
       .catch((err) => {
@@ -246,9 +263,19 @@ class App extends Component {
       return <p>Loading . . . </p>
     }
 
+    const promise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+
     return (
       <div>
+        <div className="App">
+          <Elements stripe={promise}>
+            <CheckoutForm />
+          </Elements>
+        </div>
         <MyNav onLogout={this.handleLogout} user={user} />
+        <MyCalendar />
+        <MyMap />
+        <Chatbot />
         <h1>Shopping List</h1>
         <Switch>
             <Route exact path="/" render={() => {
@@ -269,6 +296,7 @@ class App extends Component {
             <Route  path="/signup"  render={(routeProps) => {
               return  <SignUp onSubmit={this.handleSignUp} {...routeProps}  />
             }}/>
+            <Route component={NotFound} />
         </Switch>
       </div>
     )

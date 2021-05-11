@@ -36,6 +36,11 @@ export default class TodoDetail extends Component {
         <h4>Details are:</h4>
         <div>Name: {todo.name}</div>
         <div>Description: {todo.description}</div>
+        {
+          todo.image && (
+            <img src={todo.image} alt={todo.name} loading="lazy"/>
+          )
+        }
         <Link to={`/todo/${todo._id}/edit`}>
           <button>Edit</button>
         </Link>
