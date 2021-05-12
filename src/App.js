@@ -1,23 +1,28 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import MyNav from './components/MyNav'
 import { Route, Switch, withRouter } from 'react-router-dom'
-import TodoList from './components/TodoList'
 import axios from 'axios'
 import config from './config'
-import TodoDetail from './components/TodoDetail'
-import AddForm from './components/AddForm'
-import EditForm from './components/EditForm'
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
-import NotFound from './components/NotFound'
-import MyMap from './components/MyMap'
-import Chatbot from './components/Chatbot'
-import MyCalendar from './components/MyCalendar'
+import './App.css'
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from './components/CheckoutForm'
-import './App.css'
+
+import {
+  AddForm,
+  Chatbot,
+  CheckoutForm,
+  EditForm,
+  MyCalendar,
+  MyMap,
+  MyNav,
+  NotFound,
+  SignIn,
+  SignUp,
+  TodoDetail,
+  TodoList
+} from './components'
+
+
 
 class App extends Component {
 
