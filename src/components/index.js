@@ -1,3 +1,28 @@
+/*
+
+Note:
+//------------------------------------------
+
+export {default as AddForm} from './AddForm'
+export {default as Chatbot} from './Chatbot'
+
+//------------------------------------------
+
+is same as writing
+
+//------------------------------------------
+import AddForm from './AddForm'
+import Chatbot from './Chatbot'
+
+export default {
+  AddForm,
+  Chatbot
+}
+//------------------------------------------
+*/
+
+
+
 export {default as AddForm} from './AddForm'
 export {default as Chatbot} from './Chatbot'
 export {default as CheckoutForm} from './CheckoutForm'
